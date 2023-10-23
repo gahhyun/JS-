@@ -1,0 +1,49 @@
+// 코로나 api
+$.ajax({    
+   type: "GET"
+            , async: false
+            , url: 'https://api.corona-19.kr/korea/beta/?serviceKey=oCIP6xcBgnEm8wrVH31yUKD5YiFSQJsWL'
+		
+
+서울
+총인원수 : totalCnt
+총사망자 : deathCnt
+
+부산
+총인원수 : totalCnt
+총사망자 : deathCnt
+
+인천
+총인원수 : totalCnt
+총사망자 : deathCnt
+
+대구
+총인원수 : totalCnt
+총사망자 : deathCnt
+
+광주 
+총인원수 : totalCnt
+총사망자 : deathCnt
+
+
+//미세먼지 api
+$.ajax({ 
+            type: "GET"
+            , async: false
+            , url: "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99"
+
+중구
+상태 : IDEX_NM
+수치 :  IDEX_MVL
+
+강남구
+상태 : IDEX_NM
+수치 :  IDEX_MVL
+
+은평구
+상태 : IDEX_NM
+수치 :  IDEX_MVL
+
+강서구
+상태 : IDEX_NM
+수치 :  IDEX_MVL

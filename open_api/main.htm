@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>open api</title>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js" 
+        integrity="sha512-+k1pnlgt4F1H8L7t3z95o3/KO+o78INEcXTbnoJQ/F2VqDVhWoaiVml/OEHv9HsVgxUaVW+IbiZPUJQfF/YxZw==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+
+    <h3>코로나 현황</h3>
+    <br/>
+    <span>서울</span>    <br/>
+    <span>-총 인원수 :</span> <span id="seoul_totCnt"> </span>    <br/>
+    <span>-총 사망자 :</span> <span id="seoul_deathCnt"> </span>       <br/> 
+
+    <span>부산</span>    <br/>
+    <span>-총 인원수 :</span><span id="busan_totCnt"> </span>    <br/>
+    <span>-총 사망자 :</span><span id="busan_deathCnt"> </span>       <br/> 
+
+    <span>인천</span>    <br/>
+    <span>-총 인원수 :</span><span id="incheon_totCnt"> </span>    <br/>
+    <span>-총 사망자 :</span><span id="incheon_deathCnt"> </span>      <br/>  
+
+    <span>대구</span>    <br/>
+    <span>-총 인원수 :</span><span id="daegu_totCnt"> </span>    <br/>
+    <span>-총 사망자 :</span><span id="daegu_deathCnt"> </span>       <br/> 
+
+    <span>광주</span>   <br/>
+    <span>-총 인원수 :</span><span id="gwangju_totCnt"> </span>    <br/>
+    <span>-총 사망자 :</span><span id="gwangju_deathCnt"> </span>       <br/> 
+
+
+    <h3>미세먼지 현황</h3>    <br/>
+
+    <span>중구</span>    <br/>
+    <span>-상태 :</span> <span id="a_IDEX_NM"> </span>    <br/>
+    <span>-수치 :</span> <span id="a_IDEX_MVL"> </span>      <br/> 
+
+    <span>강남구</span>    <br/>
+    <span>-상태 :</span> <span id="b_IDEX_NM"> </span>    <br/>
+    <span>-수치 :</span> <span id="b_IDEX_MVL"> </span>      <br/> 
+
+    <span>은평구</span>    <br/>
+    <span>-상태 :</span> <span id="c_IDEX_NM"> </span>    <br/>
+    <span>-수치 :</span> <span id="c_IDEX_MVL"> </span>       <br/>
+
+    <span>강서구</span>    <br/>
+    <span>-상태 :</span> <span id="d_IDEX_NM"> </span>    <br/>
+    <span>-수치 :</span> <span id="d_IDEX_MVL"> </span>      <br/> 
+
+    <script>
+
+    $(document).ready(function(){
+
+        //$.get
+        //$.post
+        // , async: false > 이 옵션이란?
+
+        $.ajax({    
+            type: "GET"
+            , async: false
+            , url: 'https://api.corona-19.kr/korea/beta/?serviceKey=oCIP6xcBgnEm8wrVH31yUKD5YiFSQJsWL'
+            , success: function(data){
+                console.log("코로나 api 통신결과")
+                console.log(data);
+                //매칭하는 작업
+                /*
+                서울
+                총인원수 : totalCnt
+                총사망자 : deathCnt
+                */
+
+                var seoulData = data.seoul;
+
+                $("#seoul_totCnt").text(seoulData.totalCnt);
+                $("#seoul_deathCnt").text(seoulData.deathCnt);
+
+                $("#busan_totCnt").text(data.busan.totalCnt);
+                $("#busan_deathCnt").text(data.busan.deathCnt);
+
+                $("#incheon_totCnt").text(data.incheon.totalCnt);
+                $("#incheon_deathCnt").text(data.incheon.deathCnt);
+
+                $("#daegu_totCnt").text(data.daegu.totalCnt);
+                $("#daegu_deathCnt").text(data.daegu.deathCnt);
+
+                $("#gwangju_totCnt").text(data.gwangju.totalCnt);
+                $("#gwangju_deathCnt").text(data.gwangju.deathCnt);
+
+            }
+        });
+
+        $.ajax({    
+            type: "GET"
+            , async: false
+            , url: 'http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99'
+            , success: function(data){
+                console.log("미세먼지 api 통신결과")
+                console.log(data);
+                //매칭하는 작업
+                /*
+                중구
+                상태 : IDEX_NM
+                수치 :  IDEX_MVL
+                */
+
+                var jungguData = data.RealtimeCityAir.row.find(row => row.MSRSTE_NM === "중구");
+                $("#a_IDEX_NM").text(jungguData.IDEX_NM);
+                $("#a_IDEX_MVL").text(data.RealtimeCityAir.row.find(row => row.MSRSTE_NM === "중구")?.IDEX_MVL);
+                /*$("#a_IDEX_MVL").text(jungguData.IDEX_MVL);*/
+                $("#b_IDEX_NM").text(data.RealtimeCityAir.row.find(row => row.MSRSTE_NM === "강남구")?.IDEX_NM);
+                $("#b_IDEX_MVL").text(data.RealtimeCityAir.row.find(row => row.MSRSTE_NM === "강남구")?.IDEX_MVL);
+
+                $("#c_IDEX_NM").text(data.RealtimeCityAir.row.find(row => row.MSRSTE_NM === "은평구")?.IDEX_NM);
+                $("#c_IDEX_MVL").text(data.RealtimeCityAir.row.find(row => row.MSRSTE_NM === "은평구")?.IDEX_MVL);
+
+                $("#d_IDEX_NM").text(data.RealtimeCityAir.row.find(row => row.MSRSTE_NM === "강서구")?.IDEX_NM);
+                $("#d_IDEX_MVL").text(data.RealtimeCityAir.row.find(row => row.MSRSTE_NM === "강서구")?.IDEX_MVL);
+
+                /*
+                ?. : Optional Chaining 연산자(?.)는 JavaScript의 기능 중 하나로, 객체의 속성을 안전하게 접근하고 검사하기 위해 사용
+                */
+
+
+
+            }
+        });
+
+    });
+
+    </script>
+</body>
+</html>
